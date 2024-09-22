@@ -1,9 +1,10 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, RequestMethod } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
 import { CategoryService } from "./category.service";
 import { CategoryController } from "./category.controller";
 import { Category, CategorySchema } from "./schema/category.schema";
-
+import { ClerkAuthMiddleware } from "src/middleware";
+import { MiddlewareBuilder } from "@nestjs/core";
 
 @Module({
     imports: [
@@ -13,5 +14,12 @@ import { Category, CategorySchema } from "./schema/category.schema";
     providers: [CategoryService],
 })
 
-export class CategoryModule {}
+export class CategoryModule {   
+    configure(consumer:MiddlewareConsumer) {
+        consumer.apply(ClerkAuthMiddleware)
+        .exclude({path: 'category', method: RequestMethod.GET})
+        .exclude({path: 'category/:id', method: RequestMethod.GET})
+        .forRoutes(CategoryController);
+    }
+}   
 

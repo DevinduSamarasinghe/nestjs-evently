@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Param, Patch, Query, Req } from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, Patch, Query, Req, Put } from "@nestjs/common";
 import { EventService } from "./event.service";
 import { CreateEventDto } from "./dto/create-event.dto";
 import { UpdateEventDto } from "./dto/update-event.dto";
+import { Request } from "@nestjs/common";
 
 
 @Controller('event')
@@ -15,8 +16,10 @@ export class EventController {
     }
 
     @Patch(':id')
-    async update(@Param('id') eventId: string, @Body() updateEventDto: UpdateEventDto, @Req() req) {
-      return this.eventService.update(eventId, updateEventDto, req.user.id); // Assuming userId comes from request
+    async update(@Param('id') eventId: string, @Body() updateEventDto: UpdateEventDto, @Req() req:Request) {
+
+      const userId = req['userId'];
+      return this.eventService.update(eventId, updateEventDto, userId); // Assuming userId comes from request
     }
 
     @Get(':id')
@@ -25,13 +28,13 @@ export class EventController {
     }
 
     @Get('organizer/:userId')
-    async findByOrganizer(@Param('userId') userId: string, @Query('page') page = 1, @Query('limit') limit = 6) {
-      return this.eventService.findByOrganizer(userId, Number(limit), Number(page));
+    async findByOrganizer(@Param('userId') userId: string, @Query('page') page=1, @Query('limit') limit=6) {
+      return this.eventService.findByOrganizer(userId, limit, page);
     }
 
     @Get()
     async findAll(@Query('query') query: string, @Query('category') cateogory: string, @Query('page') page=1, @Query('limit') limit=6){
-        return this.eventService.findAll(query, cateogory, Number(page), Number(limit));
+        return this.eventService.findAll(query, cateogory, JSON.parse(String(page)), JSON.parse(String(limit)));
     }
 
     @Get('related/:categoryId/:eventId')
