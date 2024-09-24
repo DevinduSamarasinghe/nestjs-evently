@@ -34,11 +34,13 @@
     "jsonwebtoken": "^9.0.2",
     "jwks-rsa": "^3.1.0",
     "mongoose": "^8.6.3",
+    "nest-winston": "^1.9.7",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "winston": "^3.14.2"
+    "winston": "^3.14.2",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
