@@ -15,6 +15,7 @@ export class CategoryController {
 
     @Get()
     async findAll(): Promise<Category[]>{
+        console.log("AM I GETTING CALLED?");
         return this.categoryService.findAll();
     }
 

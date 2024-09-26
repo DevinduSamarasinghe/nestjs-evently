@@ -4,6 +4,7 @@ import { DatabaseModule } from './database/database.module';
 import { UserModule } from './users/users.module';
 import { CategoryModule } from './category/category.module';
 import { EventModule } from './event/event.module';
+import { CsrfModule } from './csrf/csrf.module';
 
 @Module({
   imports: [
@@ -11,7 +12,10 @@ import { EventModule } from './event/event.module';
     DatabaseModule,
     UserModule,
     CategoryModule,
-    EventModule
+    EventModule,
+
+    //middleware modules 
+    CsrfModule
   ],
 })
 
