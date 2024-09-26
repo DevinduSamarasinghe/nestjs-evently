@@ -2,12 +2,10 @@ import { Controller, Get, Req, Res } from '@nestjs/common';
 import { Request, Response } from 'express';
 
 @Controller('csrf')
-
 export class CsrfController {
-
-  @Get('token')
+  @Get('csrf-token')
   getCsrfToken(@Req() req: Request, @Res() res: Response) {
-    res.json({ csrfToken: req.csrfToken() });
+    const csrfToken = req.cookies['XSRF-TOKEN'];
+    return res.json({ csrfToken });
   }
-  
 }

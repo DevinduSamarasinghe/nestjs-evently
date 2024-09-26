@@ -1,10 +1,13 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './users/users.module';
 import { CategoryModule } from './category/category.module';
 import { EventModule } from './event/event.module';
 import { CsrfModule } from './csrf/csrf.module';
+import { CsrfMiddleware } from './csrf/csrf.middleware';
+import * as cookieParser from 'cookie-parser';
+import * as helmet from 'helmet';
 
 @Module({
   imports: [
@@ -13,10 +16,15 @@ import { CsrfModule } from './csrf/csrf.module';
     UserModule,
     CategoryModule,
     EventModule,
-
-    //middleware modules 
     CsrfModule
+
   ],
 })
 
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(cookieParser(), CsrfMiddleware)
+      .forRoutes("*")
+  }
+}
